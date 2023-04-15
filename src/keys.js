@@ -53,71 +53,114 @@ maps.global = [
     alias: "F",
     map: "gf",
     category: categories.mouseClick,
-    description: "Open a link in non-active new tab",
+    description: "在非活动的新选项卡中打开链接",
   },
   {
     alias: "zf",
     category: categories.mouseClick,
-    description: "Open link URL in vim editor",
+    description: "在vim编辑器中打开链接URL",
     callback: actions.previewLink,
   },
+  // HACK :
+  // ╭──────────────────────────────────────────────────────────╮
+  // │                          Custom                          │
+  // ╰──────────────────────────────────────────────────────────╯
   {
-    alias: "w",
-    map: "k",
-    category: categories.scroll,
-    description: "Scroll up",
+    alias: "h",
+    map: "L",
+    category: categories.mouseClick,
+    description: "寻找输入框",
   },
   {
-    alias: "s",
+    alias: "i",
+    map: "k",
+    category: categories.scroll,
+    description: "向上滚动",
+  },
+  {
+    alias: "k",
     map: "j",
     category: categories.scroll,
-    description: "Scroll down",
+    description: "向下滚动",
+  },
+  {
+    alias: "j",
+    map: "S",
+    category: categories.scroll,
+    description: "后退",
+  },
+  {
+    alias: "l",
+    map: "D",
+    category: categories.scroll,
+    description: "前进",
+  },
+  {
+    alias: "I",
+    map: "e",
+    category: categories.scroll,
+    description: "向上滚动半页",
   },
   {
     alias: "K",
-    map: "e",
+    map: "d",
     category: categories.scroll,
-    description: "Scroll half page up",
+    description: "向下滚动半页",
+  },
+  {
+    alias: "u",
+    map: "X",
+    category: categories.pageNav,
+    description: "向下滚动",
   },
   {
     alias: "J",
-    map: "d",
-    category: categories.scroll,
-    description: "Scroll half page down",
+    map: "E",
+    category: categories.pageNav,
+    description: "跳转到左边的标签页",
   },
+  {
+    alias: "L",
+    map: "R",
+    category: categories.pageNav,
+    description: "跳转到右边的标签页",
+  },
+  // HACK :
+  // ╭──────────────────────────────────────────────────────────╮
+  // │                           End                            │
+  // ╰──────────────────────────────────────────────────────────╯
   {
     alias: "gh",
     category: categories.scroll,
-    description: "Scroll to element targeted by URL hash",
+    description: "滚动到URL哈希指向的元素",
     callback: actions.scrollToHash,
   },
   {
     alias: "gi",
     category: categories.pageNav,
-    description: "Edit current URL with vim editor",
+    description: "使用vim编辑器编辑当前URL",
     callback: actions.vimEditURL,
   },
   {
     alias: "gi",
     category: categories.pageNav,
-    description: "Edit current URL with vim editor",
+    description: "使用vim编辑器编辑当前URL",
     callback: actions.vimEditURL,
   },
   {
     alias: "gI",
     category: categories.pageNav,
-    description: "View image in new tab",
+    description: "在新选项卡中查看图像",
     callback: () => util.createHints("img", (i) => actions.openLink(i.src)),
   },
   {
     alias: "g.",
     category: categories.pageNav,
-    description: "Go to parent domain",
+    description: "进入上一级域名",
     callback: () => {
       const subdomains = window.location.host.split(".")
-      const parentDomain = (subdomains.length > 2
-        ? subdomains.slice(1)
-        : subdomains
+      const parentDomain = (
+        subdomains.length > 2 ? subdomains.slice(1) : subdomains
       ).join(".")
       actions.openLink(`${window.location.protocol}//${parentDomain}`)
     },
@@ -125,19 +168,19 @@ maps.global = [
   {
     alias: "yp",
     category: categories.clipboard,
-    description: "Copy URL path of current page",
+    description: "复制当前页面的URL路径",
     callback: () => Clipboard.write(window.location.href),
   },
   {
     alias: "yI",
     category: categories.clipboard,
-    description: "Copy Image URL",
+    description: "复制图片URL",
     callback: () => util.createHints("img", (i) => Clipboard.write(i.src)),
   },
   {
     alias: "yA",
     category: categories.clipboard,
-    description: "Copy link as Markdown",
+    description: "复制链接作为Markdown",
     callback: () =>
       util.createHints("a[href]", (a) =>
         Clipboard.write(`[${a.innerText}](${a.href})`)
@@ -146,19 +189,19 @@ maps.global = [
   {
     alias: "yO",
     category: categories.clipboard,
-    description: "Copy page URL/Title as Org-mode link",
+    description: "复制页面URL/标题为组织模式链接",
     callback: () => Clipboard.write(actions.getOrgLink()),
   },
   {
     alias: "yM",
     category: categories.clipboard,
-    description: "Copy page URL/Title as Markdown link",
+    description: "复制页面URL/标题为组织模式链接",
     callback: () => Clipboard.write(actions.getMarkdownLink()),
   },
   {
     alias: "yT",
     category: categories.tabs,
-    description: "Duplicate current tab (non-active new tab)",
+    description: "重复当前选项卡(非活动的新选项卡)",
     callback: () =>
       actions.openLink(window.location.href, { newTab: true, active: false }),
   },
@@ -178,101 +221,101 @@ maps.global = [
   {
     alias: ";se",
     category: categories.settings,
-    description: "Edit Settings",
+    description: "编辑设置",
     callback: actions.editSettings,
   },
   {
     alias: "gS",
     category: categories.chromeURLs,
-    description: "Open Chrome settings",
+    description: "打开Chrome设置",
   },
   {
     alias: "=W",
     category: categories.misc,
-    description: "Lookup whois information for domain",
+    description: "查找域的whois信息",
     callback: () => actions.openLink(actions.getWhoisUrl(), { newTab: true }),
   },
   {
     alias: "=d",
     category: categories.misc,
-    description: "Lookup dns information for domain",
+    description: "查找域的whois信息",
     callback: () => actions.openLink(actions.getDnsInfoUrl(), { newTab: true }),
   },
   {
     alias: "=D",
     category: categories.misc,
-    description: "Lookup all information for domain",
+    description: "查找域的所有信息",
     callback: () =>
       actions.openLink(actions.getDnsInfoUrl({ all: true }), { newTab: true }),
   },
   {
     alias: "=c",
     category: categories.misc,
-    description: "Show Google's cached version of page",
+    description: "显示谷歌的页面缓存版本",
     callback: () =>
       actions.openLink(actions.getGoogleCacheUrl(), { newTab: true }),
   },
   {
     alias: "=a",
     category: categories.misc,
-    description: "Show Archive.org Wayback Machine for page",
+    description: "显示Archive.org Wayback Machine页",
     callback: () => actions.openLink(actions.getWaybackUrl(), { newTab: true }),
   },
   {
     alias: "=A",
     category: categories.misc,
-    description: "Show Alexa.com info for domain",
+    description: "显示域的Alexa.com信息",
     callback: () => actions.openLink(actions.getAlexaUrl(), { newTab: true }),
   },
   {
     alias: "=s",
     category: categories.misc,
-    description: "View social discussions for page",
+    description: "查看社会讨论页",
     callback: () =>
       actions.openLink(actions.getDiscussionsUrl(), { newTab: true }),
   },
   {
     alias: "=o",
     category: categories.misc,
-    description: "Show outline.com version of page",
+    description: "显示outline.com版本的页面",
     callback: () => actions.openLink(actions.getOutlineUrl(), { newTab: true }),
   },
   {
     alias: "=bw",
     category: categories.misc,
-    description: "Show BuiltWith report for page",
+    description: "显示页面的BuiltWith报告",
     callback: () =>
       actions.openLink(actions.getBuiltWithUrl(), { newTab: true }),
   },
   {
     alias: "=wa",
     category: categories.misc,
-    description: "Show Wappalyzer report for page",
+    description: "显示Wappalyzer报告页",
     callback: () =>
       actions.openLink(actions.getWappalyzerUrl(), { newTab: true }),
   },
   {
     alias: ";pd",
     category: categories.misc,
-    description: "Toggle PDF viewer from SurfingKeys",
+    description: "从SurfingKeys切换PDF查看器",
     callback: actions.togglePdfViewer,
   },
   {
     alias: "gxE",
     map: "gxt",
     category: categories.tabs,
-    description: "Close tab to left",
+    description: "关闭左标签",
   },
   {
     alias: "gxR",
     map: "gxT",
     category: categories.tabs,
-    description: "Close tab to right",
+    description: "向右关闭标签",
   },
   {
     alias: "\\cgh",
     category: categories.clipboard,
-    description: "Open clipboard string as GitHub path (e.g. 'torvalds/linux')",
+    description: "打开剪贴板字符串作为GitHub路径(例如:torvalds / linux)",
     callback: async () => {
       const { url } = actions.gh.parseRepo(await navigator.clipboard.readText())
       Front.showBanner(`Open ${url}`)
@@ -283,17 +326,17 @@ maps.global = [
     alias: "F",
     map: "gf",
     category: categories.mouseClick,
-    description: "Open a link in non-active new tab",
+    description: "在非活动的新选项卡中打开链接",
   },
   {
     alias: "oh",
     category: categories.omnibar,
-    description: "Open URL from history",
+    description: "从历史记录打开URL",
     callback: () => Front.openOmnibar({ type: "History" }),
   },
   // {
   //   alias:       "\\A",
-  //   description: "Open AWS service",
+  //   description: "打开AWS服务",
   //   callback:    actions.omnibar.aws,
   // },
 ]
@@ -306,37 +349,37 @@ maps["amazon.com"] = [
   },
   {
     alias: "a",
-    description: "View product",
+    description: "查看产品",
     callback: actions.az.viewProduct,
   },
   {
     alias: "c",
-    description: "Add to Cart",
+    description: "添加到购物车",
     callback: () => util.createHints("#add-to-cart-button"),
   },
   {
     alias: "R",
-    description: "View Product Reviews",
+    description: "查看产品评论",
     callback: () => actions.openLink("#customerReviews"),
   },
   {
     alias: "Q",
-    description: "View Product Q&A",
+    description: "查看产品问答",
     callback: () => actions.openLink("#Ask"),
   },
   {
     alias: "A",
-    description: "Open Account page",
+    description: "打开账户页面",
     callback: () => actions.openLink("/gp/css/homepage.html"),
   },
   {
     alias: "C",
-    description: "Open Cart page",
+    description: "打开购物车页面",
     callback: () => actions.openLink("/gp/cart/view.html"),
   },
   {
     alias: "O",
-    description: "Open Orders page",
+    description: "打开订单页面",
     callback: () => actions.openLink("/gp/css/order-history"),
   },
 ]
@@ -359,12 +402,12 @@ const googleSearchResultSelector = [
 maps["www.google.com"] = [
   {
     alias: "a",
-    description: "Open search result",
+    description: "打开搜索结果",
     callback: () => util.createHints(googleSearchResultSelector),
   },
   {
     alias: "A",
-    description: "Open search result (new tab)",
+    description: "打开搜索结果(新标签)",
     callback: () =>
       util.createHints(
         googleSearchResultSelector,
@@ -373,7 +416,7 @@ maps["www.google.com"] = [
   },
   {
     alias: "d",
-    description: "Open search in DuckDuckGo",
+    description: "在DuckDuckGo打开搜索",
     callback: actions.go.ddg,
   },
 ]
@@ -381,7 +424,7 @@ maps["www.google.com"] = [
 maps["algolia.com"] = [
   {
     alias: "a",
-    description: "Open search result",
+    description: "打开搜索结果",
     callback: () => util.createHints(".item-main h2>a:first-child"),
   },
 ]
@@ -396,12 +439,12 @@ const ddgSelector = [
 maps["duckduckgo.com"] = [
   {
     alias: "a",
-    description: "Open search result",
+    description: "打开搜索结果",
     callback: () => util.createHints(ddgSelector),
   },
   {
     alias: "A",
-    description: "Open search result (non-active new tab)",
+    description: "打开搜索结果(非活动的新选项卡)",
     callback: () =>
       util.createHints(
         ddgSelector,
@@ -411,22 +454,22 @@ maps["duckduckgo.com"] = [
   {
     leader: "",
     alias: "]]",
-    description: "Show more results",
+    description: "展示更多成果",
     callback: () => document.querySelector(".result--more__btn").click(),
   },
   {
     alias: "g",
-    description: "Open search in Google",
+    description: "在谷歌打开搜索",
     callback: actions.dg.goog,
   },
   {
     alias: "sgh",
-    description: "Search site:github.com",
+    description: "搜索网站:github.com",
     callback: () => actions.dg.siteSearch("github.com"),
   },
   {
     alias: "sre",
-    description: "Search site:reddit.com",
+    description: "搜索网站:reddit.com",
     callback: () => actions.dg.siteSearch("reddit.com"),
   },
 ]
@@ -443,7 +486,7 @@ maps["youtube.com"] = [
   {
     leader: "",
     alias: "A",
-    description: "Open video",
+    description: "打开视频",
     callback: () =>
       util.createHints(
         "*[id='video-title']",
@@ -453,20 +496,20 @@ maps["youtube.com"] = [
   {
     leader: "",
     alias: "C",
-    description: "Open channel",
+    description: "打开通道",
     callback: () => util.createHints("*[id='byline']"),
   },
   {
     leader: "",
     alias: "gH",
-    description: "Goto homepage",
+    description: "转到主页",
     callback: () =>
       actions.openLink("https://www.youtube.com/feed/subscriptions?flow=2"),
   },
   {
     leader: "",
     alias: "F",
-    description: "Toggle fullscreen",
+    description: "切换全屏",
     callback: () =>
       actions.dispatchMouseEvents(
         document.querySelector("#movie_player.ytp-fullscreen-button"),
@@ -477,13 +520,13 @@ maps["youtube.com"] = [
   {
     leader: "",
     alias: "Yt",
-    description: "Copy YouTube video link for current time",
+    description: "复制YouTube视频链接为当前时间",
     callback: () => Clipboard.write(actions.yt.getCurrentTimestampLink()),
   },
   {
     leader: "",
     alias: "Ym",
-    description: "Copy YouTube video markdown link for current time",
+    description: "复制YouTube视频markdown链接为当前时间",
     callback: () =>
       Clipboard.write(actions.yt.getCurrentTimestampMarkdownLink()),
   },
@@ -492,7 +535,7 @@ maps["youtube.com"] = [
 maps["vimeo.com"] = [
   {
     alias: "F",
-    description: "Toggle fullscreen",
+    description: "切换全屏",
     callback: () => document.querySelector(".fullscreen-icon").click(),
   },
 ]
@@ -500,135 +543,135 @@ maps["vimeo.com"] = [
 maps["github.com"] = [
   {
     alias: "A",
-    description: "Open repository Actions page",
+    description: "打开存储库操作页面",
     callback: () => actions.gh.openRepoPage("/actions"),
   },
   {
     alias: "C",
-    description: "Open repository Commits page",
+    description: "打开存储库提交页面",
     callback: () => actions.gh.openRepoPage("/commits"),
   },
   {
     alias: "I",
-    description: "Open repository Issues page",
+    description: "打开存储库问题页面",
     callback: () => actions.gh.openRepoPage("/issues"),
   },
   {
     alias: "N",
-    description: "Open notifications page",
+    description: "打开通知页面",
     callback: () => actions.gh.openPage("/notifications"),
   },
   {
     alias: "P",
-    description: "Open repository Pull Requests page",
+    description: "打开存储库Pull Requests页面",
     callback: () => actions.gh.openRepoPage("/pulls"),
   },
   {
     alias: "R",
-    description: "Open Repository page",
+    description: "打开存储库页面",
     callback: () => actions.gh.openRepoPage("/"),
   },
   {
     alias: "S",
-    description: "Open repository Settings page",
+    description: "打开存储库设置页面",
     callback: () => actions.gh.openRepoPage("/settings"),
   },
   {
     alias: "W",
-    description: "Open repository Wiki page",
+    description: "打开存储库Wiki页面",
     callback: () => actions.gh.openRepoPage("/wiki"),
   },
   {
     alias: "X",
-    description: "Open repository Security page",
+    description: "打开存储库安全页面",
     callback: () => actions.gh.openRepoPage("/security"),
   },
   {
     alias: "O",
-    description: "Open repository Owner's profile page",
+    description: "打开存储库所有者的配置文件页面",
     callback: actions.gh.openRepoOwner,
   },
   {
     alias: "M",
-    description: "Open your profile page ('Me')",
+    description: "打开个人资料页面(“我”)",
     callback: actions.gh.openProfile,
   },
   {
     alias: "a",
-    description: "View Repository",
+    description: "查看存储库",
     callback: actions.gh.openRepo,
   },
   {
     alias: "u",
-    description: "View User",
+    description: "查看用户",
     callback: actions.gh.openUser,
   },
   {
     alias: "f",
-    description: "View File",
+    description: "视图文件",
     callback: actions.gh.openFile,
   },
   {
     alias: "c",
-    description: "View Commit",
+    description: "查看提交",
     callback: actions.gh.openCommit,
   },
   {
     alias: "i",
-    description: "View Issue",
+    description: "查看问题",
     callback: actions.gh.openIssue,
   },
   {
     alias: "p",
-    description: "View Pull Request",
+    description: "视图拉请求",
     callback: actions.gh.openPull,
   },
   {
     alias: "e",
-    description: "View external link",
+    description: "查看外部链接",
     callback: () => util.createHints("a[rel=nofollow]"),
   },
   {
     // TODO: Add repetition support: 3gu
     leader: "",
     alias: "gu",
-    description: "Go up one path in the URL (GitHub)",
+    description: "在URL的一个路径(GitHub)",
     callback: actions.gh.goParent,
   },
   {
     alias: "s",
-    description: "Toggle Star",
+    description: "切换star",
     callback: actions.gh.star({ toggle: true }),
   },
   {
     alias: "yy",
-    description: "Copy Project Path",
+    description: "复制工程路径",
     callback: async () => Clipboard.write(util.getURLPath({ count: 2 })),
   },
   {
     alias: "Y",
-    description: "Copy Project Path (including domain)",
+    description: "复制项目路径(含域)",
     callback: () =>
       Clipboard.write(util.getURLPath({ count: 2, domain: true })),
   },
   {
     alias: "l",
-    description: "Toggle repo language stats",
+    description: "切换回购语言统计信息",
     callback: actions.gh.toggleLangStats,
   },
   {
     alias: "D",
-    description: "View GoDoc for Project",
+    description: "查看GoDoc项目",
     callback: actions.viewGodoc,
   },
   {
     alias: "G",
-    description: "View on SourceGraph",
+    description: "查看SourceGraph",
     callback: actions.gh.viewSourceGraph,
   },
   {
     alias: "r",
-    description: "View live raw version of file",
+    description: "查看实时原始版本的文件",
     callback: () =>
       actions.gh
         .selectFile({ directories: false })
@@ -636,7 +679,7 @@ maps["github.com"] = [
   },
   {
     alias: "yr",
-    description: "Copy raw link to file",
+    description: "复制原始链接到文件",
     callback: () =>
       actions.gh
         .selectFile({ directories: false })
@@ -644,13 +687,13 @@ maps["github.com"] = [
   },
   {
     alias: "yf",
-    description: "Copy link to file",
+    description: "复制链接到文件",
     callback: () =>
       actions.gh.selectFile().then((file) => Clipboard.write(file.url)),
   },
   {
     alias: "gcp",
-    description: "Open clipboard string as file path in repo",
+    description: "在repo中打开剪贴板字符串作为文件路径",
     callback: actions.gh.openFileFromClipboard,
   },
 ]
@@ -658,12 +701,12 @@ maps["github.com"] = [
 maps["raw.githubusercontent.com"] = [
   {
     alias: "R",
-    description: "Open Repository page",
+    description: "打开存储库页面",
     callback: () => actions.gh.openRepoPage("/"),
   },
   {
     alias: "F",
-    description: "Open Source File",
+    description: "打开源文件",
     callback: actions.gh.openSourceFile,
   },
 ]
@@ -671,7 +714,7 @@ maps["raw.githubusercontent.com"] = [
 maps["github.io"] = [
   {
     alias: "R",
-    description: "Open Repository page",
+    description: "打开存储库页面",
     callback: () => actions.gh.openGithubPagesRepo(),
   },
 ]
@@ -679,23 +722,23 @@ maps["github.io"] = [
 maps["gitlab.com"] = [
   {
     alias: "s",
-    description: "Toggle Star",
+    description: "切换star",
     callback: actions.gl.star,
   },
   {
     alias: "y",
-    description: "Copy Project Path",
+    description: "复制工程路径",
     callback: () => Clipboard.write(util.getURLPath({ count: 2 })),
   },
   {
     alias: "Y",
-    description: "Copy Project Path (including domain)",
+    description: "复制项目路径(含域)",
     callback: () =>
       Clipboard.write(util.getURLPath({ count: 2, domain: true })),
   },
   {
     alias: "D",
-    description: "View GoDoc for Project",
+    description: "查看GoDoc项目",
     callback: actions.viewGodoc,
   },
 ]
@@ -703,29 +746,29 @@ maps["gitlab.com"] = [
 maps["twitter.com"] = [
   {
     alias: "f",
-    description: "Follow user",
+    description: "遵循用户",
     callback: () =>
       util.createHints("div[role='button'][data-testid$='follow']"),
   },
   {
     alias: "s",
-    description: "Like tweet",
+    description: "就像推特",
     callback: () => util.createHints("div[role='button'][data-testid$='like']"),
   },
   {
     alias: "R",
-    description: "Retweet",
+    description: "vt. 转发推特（在社交网站Twitter上转发他人的推特信息）",
     callback: () =>
       util.createHints("div[role='button'][data-testid$='retweet']"),
   },
   {
     alias: "c",
-    description: "Comment/Reply",
+    description: "评论/答复",
     callback: () => util.createHints("div[role='button'][data-testid='reply']"),
   },
   {
     alias: "T",
-    description: "New tweet",
+    description: "新推特",
     callback: () =>
       document
         .querySelector(
@@ -735,7 +778,7 @@ maps["twitter.com"] = [
   },
   {
     alias: "u",
-    description: "Goto user",
+    description: "跳转至用户",
     callback: actions.tw.openUser,
   },
   {
@@ -751,12 +794,12 @@ maps["twitter.com"] = [
 maps["reddit.com"] = [
   {
     alias: "x",
-    description: "Collapse comment",
+    description: "崩溃的评论",
     callback: () => util.createHints(".expand"),
   },
   {
     alias: "X",
-    description: "Collapse next comment",
+    description: "折叠下一个注释",
     callback: actions.re.collapseNextComment,
   },
   {
@@ -771,17 +814,17 @@ maps["reddit.com"] = [
   },
   {
     alias: "e",
-    description: "Expand expando",
+    description: "扩大expando",
     callback: () => util.createHints(".expando-button"),
   },
   {
     alias: "a",
-    description: "View post (link)",
+    description: "查看帖子(链接)",
     callback: () => util.createHints(".title"),
   },
   {
     alias: "A",
-    description: "View post (link) (non-active new tab)",
+    description: "查看帖子(链接)(非活动的新标签)",
     callback: () =>
       util.createHints(
         ".title",
@@ -790,12 +833,12 @@ maps["reddit.com"] = [
   },
   {
     alias: "c",
-    description: "View post (comments)",
+    description: "查看帖子(评论)",
     callback: () => util.createHints(".comments"),
   },
   {
     alias: "C",
-    description: "View post (comments) (non-active new tab)",
+    description: "查看帖子(评论)(非活动的新标签)",
     callback: () =>
       util.createHints(
         ".comments",
@@ -807,12 +850,12 @@ maps["reddit.com"] = [
 maps["news.ycombinator.com"] = [
   {
     alias: "x",
-    description: "Collapse comment",
+    description: "崩溃的评论",
     callback: () => util.createHints(".togg"),
   },
   {
     alias: "X",
-    description: "Collapse next comment",
+    description: "折叠下一个注释",
     callback: actions.hn.collapseNextComment,
   },
   {
@@ -827,22 +870,22 @@ maps["news.ycombinator.com"] = [
   },
   {
     alias: "a",
-    description: "View post (link)",
+    description: "查看帖子(链接)",
     callback: () => util.createHints(".titleline>a"),
   },
   {
     alias: "A",
-    description: "View post (link and comments)",
+    description: "查看帖子(链接和评论)",
     callback: () => util.createHints(".athing", actions.hn.openLinkAndComments),
   },
   {
     alias: "c",
-    description: "View post (comments)",
+    description: "查看帖子(评论)",
     callback: () => util.createHints(".subline>a[href^='item']"),
   },
   {
     alias: "C",
-    description: "View post (comments) (non-active new tab)",
+    description: "查看帖子(评论)(非活动的新标签)",
     callback: () =>
       util.createHints(
         ".subline>a[href^='item']",
@@ -851,25 +894,25 @@ maps["news.ycombinator.com"] = [
   },
   {
     alias: "e",
-    description: "View external link",
+    description: "查看外部链接",
     callback: () => util.createHints("a[rel=nofollow]"),
   },
   {
     leader: "",
     alias: "gp",
-    description: "Go to parent",
+    description: "去找上一级",
     callback: actions.hn.goParent,
   },
   {
     leader: "",
     alias: "]]",
-    description: "Next page",
+    description: "下一个页面",
     callback: () => actions.hn.goPage(1),
   },
   {
     leader: "",
     alias: "[[",
-    description: "Prev page",
+    description: "前一个页面",
     callback: () => actions.hn.goPage(-1),
   },
 ]
@@ -877,12 +920,12 @@ maps["news.ycombinator.com"] = [
 maps["producthunt.com"] = [
   {
     alias: "a",
-    description: "View product (external)",
+    description: "查看产品(外部)",
     callback: actions.ph.openExternal,
   },
   {
     alias: "v",
-    description: "View product",
+    description: "查看产品",
     callback: () =>
       util.createHints(
         "ul[class^='postsList_'] > li > div[class^='item_'] > a"
@@ -890,7 +933,7 @@ maps["producthunt.com"] = [
   },
   {
     alias: "s",
-    description: "Upvote product",
+    description: "Upvote产品",
     callback: () => util.createHints("button[data-test='vote-button']"),
   },
 ]
@@ -898,22 +941,22 @@ maps["producthunt.com"] = [
 maps["behance.net"] = [
   {
     alias: "s",
-    description: "Appreciate project",
+    description: "感谢项目",
     callback: () => util.createHints(".appreciation-button"),
   },
   {
     alias: "b",
-    description: "Add project to collection",
+    description: "将项目添加到集合",
     callback: () => document.querySelector(".qa-action-collection").click(),
   },
   {
     alias: "a",
-    description: "View project",
+    description: "查看项目",
     callback: () => util.createHints(".rf-project-cover__title"),
   },
   {
     alias: "A",
-    description: "View project (non-active new tab)",
+    description: "查看项目(非活动的新选项卡)",
     callback: () =>
       util.createHints(
         ".rf-project-cover__title",
@@ -925,12 +968,12 @@ maps["behance.net"] = [
 maps["fonts.adobe.com"] = [
   {
     alias: "a",
-    description: "Activate font",
+    description: "激活字体",
     callback: () => util.createHints(".spectrum-ToggleSwitch-input"),
   },
   {
     alias: "s",
-    description: "Favorite font",
+    description: "最喜欢的字体",
     callback: () => util.createHints(".favorite-toggle-icon"),
   },
 ]
@@ -938,12 +981,12 @@ maps["fonts.adobe.com"] = [
 maps["wikipedia.org"] = [
   {
     alias: "s",
-    description: "Toggle simple version of current article",
+    description: "切换当前文章的简单版本",
     callback: actions.wp.toggleSimple,
   },
   {
     alias: "a",
-    description: "View page",
+    description: "视图页面",
     callback: () =>
       util.createHints(
         "#bodyContent :not(sup):not(.mw-editsection) > a:not([rel=nofollow])"
@@ -951,17 +994,17 @@ maps["wikipedia.org"] = [
   },
   {
     alias: "e",
-    description: "View external link",
+    description: "查看外部链接",
     callback: () => util.createHints("a[rel=nofollow]"),
   },
   {
     alias: "ys",
-    description: "Copy article summary as Markdown",
+    description: "将文章摘要复制为Markdown",
     callback: () => Clipboard.write(actions.wp.markdownSummary()),
   },
   {
     alias: "R",
-    description: "View WikiRank for current article",
+    description: "查看WikiRank当前文章",
     callback: actions.wp.viewWikiRank,
   },
 ]
@@ -969,7 +1012,7 @@ maps["wikipedia.org"] = [
 maps["craigslist.org"] = [
   {
     alias: "a",
-    description: "View listing",
+    description: "查看清单",
     callback: () => util.createHints("a.result-title"),
   },
 ]
@@ -977,7 +1020,7 @@ maps["craigslist.org"] = [
 maps["stackoverflow.com"] = [
   {
     alias: "a",
-    description: "View question",
+    description: "查看问题",
     callback: () => util.createHints("a.question-hyperlink"),
   },
 ]
@@ -985,7 +1028,7 @@ maps["stackoverflow.com"] = [
 maps["aur.archlinux.org"] = [
   {
     alias: "a",
-    description: "View package",
+    description: "视图包",
     callback: () => util.createHints("a[href^='/packages/'][href$='/']"),
   },
 ]
@@ -995,50 +1038,50 @@ maps["home.nest.com"] = [
     path: "/thermostat/DEVICE_.*",
     leader: "",
     alias: "=",
-    description: "Increment temperature",
+    description: "增加温度",
     callback: () => actions.nt.adjustTemp(1),
   },
   {
     path: "/thermostat/DEVICE_.*",
     leader: "",
     alias: "-",
-    description: "Decrement temperature",
+    description: "减量温度",
     callback: () => actions.nt.adjustTemp(-1),
   },
   {
     path: "/thermostat/DEVICE_.*",
-    alias: "h",
-    description: "Switch mode to Heat",
+    alias: "j",
+    description: "切换模式至Heat",
     callback: () => actions.nt.setMode("heat"),
   },
   {
     path: "/thermostat/DEVICE_.*",
     alias: "c",
-    description: "Switch mode to Cool",
+    description: "切换到Cool模式",
     callback: () => actions.nt.setMode("cool"),
   },
   {
     path: "/thermostat/DEVICE_.*",
     alias: "r",
-    description: "Switch mode to Heat/Cool",
+    description: "切换到热/冷模式",
     callback: () => actions.nt.setMode("range"),
   },
   {
     path: "/thermostat/DEVICE_.*",
     alias: "o",
-    description: "Switch mode to Off",
+    description: "关闭模式",
     callback: () => actions.nt.setMode("off"),
   },
   {
     path: "/thermostat/DEVICE_.*",
     alias: "f",
-    description: "Switch fan On",
+    description: "打开风扇",
     callback: () => actions.nt.setFan(1),
   },
   {
     path: "/thermostat/DEVICE_.*",
     alias: "F",
-    description: "Switch fan Off",
+    description: "关闭风扇",
     callback: () => actions.nt.setFan(0),
   },
 ]
@@ -1052,13 +1095,13 @@ maps["rescript-lang.org"] = [
   {
     leader: "",
     alias: "i",
-    description: "Focus search field",
+    description: "焦点搜索域",
     path: `(${rescriptMeta.docsPat})?$`,
     callback: actions.re.focusSearch,
   },
   {
     alias: "a",
-    description: "Open docs link",
+    description: "打开文档link",
     path: rescriptMeta.docsPat,
     callback: () => util.createHints("a[href^='/docs/']"),
   },
@@ -1066,57 +1109,57 @@ maps["rescript-lang.org"] = [
   // Shorcuts
   {
     alias: "L",
-    description: "Open language manual",
+    description: "打开语言手册",
     callback: () => actions.openLink("/docs/manual/latest/introduction"),
   },
   {
     alias: "R",
-    description: "Open ReScript + React docs",
+    description: "打开ReScript + React文档",
     callback: () => actions.openLink("/docs/react/latest/introduction"),
   },
   {
     alias: "G",
-    description: "Open GenType docs",
+    description: "打开GenType文档",
     callback: () => actions.openLink("/docs/gentype/latest/introduction"),
   },
   {
     alias: "P",
-    description: "Open package index",
+    description: "打开包索引",
     callback: () => actions.openLink("/packages"),
   },
   {
     alias: "Y",
-    description: "Open playground",
+    description: "打开的操场",
     callback: () => actions.openLink("/try"),
   },
   {
     alias: "S",
-    description: "Open syntax lookup",
+    description: "打开语法查找",
     callback: () => actions.openLink("/syntax-lookup"),
   },
   {
     alias: "F",
-    description: "Open community forum",
+    description: "打开社区论坛",
     callback: () => actions.openLink("https://forum.rescript-lang.org/"),
   },
   {
     alias: "A",
-    description: "Open API docs",
+    description: "打开API文档",
     callback: () => actions.openLink("/docs/manual/latest/api"),
   },
   {
     alias: "J",
-    description: "Open JS API docs",
+    description: "打开JS API文档",
     callback: () => actions.openLink("/docs/manual/latest/api/js"),
   },
   {
     alias: "B",
-    description: "Open Belt API docs",
+    description: "打开 Belt API文档",
     callback: () => actions.openLink("/docs/manual/latest/api/belt"),
   },
   {
     alias: "D",
-    description: "Open DOM API docs",
+    description: "打开DOM API文档",
     callback: () => actions.openLink("/docs/manual/latest/api/dom"),
   },
 
@@ -1124,56 +1167,56 @@ maps["rescript-lang.org"] = [
   {
     leader: "",
     alias: "w",
-    description: "Scroll sidebar up",
+    description: "向上滚动侧栏",
     path: rescriptMeta.docsPat,
     callback: () => actions.re.scrollSidebar("up"),
   },
   {
     leader: "",
     alias: "s",
-    description: "Scroll sidebar down",
+    description: "向下滚动侧栏",
     path: rescriptMeta.docsPat,
     callback: () => actions.re.scrollSidebar("down"),
   },
   {
     leader: "",
     alias: "e",
-    description: "Scroll sidebar page up",
+    description: "向上滚动侧栏页面",
     path: rescriptMeta.docsPat,
     callback: () => actions.re.scrollSidebar("pageUp"),
   },
   {
     leader: "",
     alias: "d",
-    description: "Scroll sidebar page down",
+    description: "向下滚动侧栏页面",
     path: rescriptMeta.docsPat,
     callback: () => actions.re.scrollSidebar("pageDown"),
   },
   {
     leader: "",
     alias: "k",
-    description: "Scroll body up",
+    description: "滚动主体向上",
     path: rescriptMeta.docsPat,
     callback: () => actions.re.scrollContent("up"),
   },
   {
     leader: "",
     alias: "j",
-    description: "Scroll body down",
+    description: "滚动主体向下",
     path: rescriptMeta.docsPat,
     callback: () => actions.re.scrollContent("down"),
   },
   {
     leader: "",
     alias: "K",
-    description: "Scroll body page up",
+    description: "滚动主体页面向上",
     path: rescriptMeta.docsPat,
     callback: () => actions.re.scrollContent("pageUp"),
   },
   {
     leader: "",
     alias: "J",
-    description: "Scroll body page down",
+    description: "滚动正文页面向下",
     path: rescriptMeta.docsPat,
     callback: () => actions.re.scrollContent("pageDown"),
   },
@@ -1183,49 +1226,49 @@ maps["devdocs.io"] = [
   {
     leader: "",
     alias: "w",
-    description: "Scroll sidebar up",
+    description: "向上滚动侧栏",
     callback: () => actions.dv.scrollSidebar("up"),
   },
   {
     leader: "",
     alias: "s",
-    description: "Scroll sidebar down",
+    description: "向下滚动侧栏",
     callback: () => actions.dv.scrollSidebar("down"),
   },
   {
     leader: "",
     alias: "e",
-    description: "Scroll sidebar page up",
+    description: "向上滚动侧栏页面",
     callback: () => actions.dv.scrollSidebar("pageUp"),
   },
   {
     leader: "",
     alias: "d",
-    description: "Scroll sidebar page down",
+    description: "向下滚动侧栏页面",
     callback: () => actions.dv.scrollSidebar("pageDown"),
   },
   {
     leader: "",
     alias: "k",
-    description: "Scroll body up",
+    description: "滚动主体向上",
     callback: () => actions.dv.scrollContent("up"),
   },
   {
     leader: "",
     alias: "j",
-    description: "Scroll body down",
+    description: "滚动主体向下",
     callback: () => actions.dv.scrollContent("down"),
   },
   {
     leader: "",
     alias: "K",
-    description: "Scroll body page up",
+    description: "滚动主体页面向上",
     callback: () => actions.dv.scrollContent("pageUp"),
   },
   {
     leader: "",
     alias: "J",
-    description: "Scroll body page down",
+    description: "滚动正文页面向下",
     callback: () => actions.dv.scrollContent("pageDown"),
   },
 ]
@@ -1241,37 +1284,37 @@ maps["ebay.com"] = [
 maps["ikea.com"] = [
   {
     alias: "d",
-    description: "Toggle Product Details",
+    description: "切换产品详情",
     callback: () => actions.ik.toggleProductDetails(),
   },
   {
     alias: "i",
-    description: "Toggle Product Details",
+    description: "切换产品详情",
     callback: () => actions.ik.toggleProductDetails(),
   },
   {
     alias: "r",
-    description: "Toggle Product Reviews",
+    description: "切换产品评论",
     callback: () => actions.ik.toggleProductReviews(),
   },
   {
     alias: "C",
-    description: "Open Cart page",
+    description: "打开购物车页面",
     callback: () => actions.openLink("/us/en/shoppingcart/"),
   },
   {
     alias: "P",
-    description: "Open Profile page",
+    description: "打开个人资料页面",
     callback: () => actions.openLink("/us/en/profile/login/"),
   },
   {
     alias: "F",
-    description: "Open Favorites page",
+    description: "打开收藏夹页面",
     callback: () => actions.openLink("/us/en/favorites/"),
   },
   {
     alias: "O",
-    description: "Open Orders page",
+    description: "打开订单页面",
     callback: () =>
       actions.openLink("/us/en/customer-service/track-manage-order/"),
   },
@@ -1286,7 +1329,7 @@ const registerDOI = (
   }
   maps[domain].push({
     alias: "O",
-    description: "Open DOI",
+    description: "打开数字对象标识符",
     callback: () => {
       const url = actions.doi.getLink(provider)
       if (url) {
