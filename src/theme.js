@@ -38,58 +38,6 @@ export default `
 
   @media (prefers-color-scheme: light) {
     body {
-      color: #483270;
-    }
-
-    #sk_omnibar {
-      background-color: #f5f3fd !important;
-      color: #59446f !important;
-      box-shadow: 0px 3px 15px -6px rgba(53, 13, 81, 0.7) !important;
-    }
-
-    #sk_omnibar .prompt {
-      color: #c2b2d7 !important;
-    }
-
-    #sk_omnibar .separator {
-      color: #d4b1ff !important;
-    }
-
-    #sk_omnibar input {
-      color: #351d53 !important;
-    }
-
-    #sk_omnibarSearchResult {
-      border-top: 1px solid #e1cff5 !important;
-    }
-
-    #sk_omnibar li.focused {
-      background-color: #e1ddff !important;
-      color: #351d53 !important;
-    }
-
-    #sk_banner,
-    #sk_keystroke {
-      border: 1px solid #d7b0ff;
-      background: #e9d9ee;
-    }
-
-    #sk_keystroke .annotation {
-      color: #483270;
-    }
-
-    #sk_keystroke kbd {
-      color: black;
-      background: white;
-    }
-
-    #sk_keystroke kbd .candidates {
-      color: #ff7a75;
-    }
-  }
-
-  @media (prefers-color-scheme: dark) {
-    body {
       color: #d7b0ff;
     }
 

@@ -65,12 +65,13 @@ maps.global = [
   // ╭──────────────────────────────────────────────────────────╮
   // │                          Custom                          │
   // ╰──────────────────────────────────────────────────────────╯
-  {
-    alias: "h",
-    map: "L",
-    category: categories.mouseClick,
-    description: "寻找输入框",
-  },
+  // FIXME :this not working
+  // {
+  //   alias: "h",
+  //   map: "L",
+  //   category: categories.mouseClick,
+  //   description: "寻找输入框",
+  // },
   {
     alias: "i",
     map: "k",

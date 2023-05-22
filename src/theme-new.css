@@ -2,10 +2,10 @@
   :root {
     --color-shadow: rgba(53, 13, 81, 0.7);
 
-    --color-bg-0: #f5f3fd;
+    --color-bg-0: #181825;
     --color-bg-1: #e9d9ee;
     --color-bg-2: #e1ddff;
-    --color-bg-3: #ffffff;
+    --color-bg-3: #181825;
 
     --color-fg-0: #000000;
     --color-fg-1: #351d53;
@@ -148,9 +148,8 @@
 }
 
 * {
-  font-family: "Sudo Nerd Font Mono", "Sudo Mono", "Sudo",
-    "Input Mono Nerd Font", "Input Mono", "DejaVu Sans Mono", "DejaVu", "Arial",
-    sans-serif;
+  font-family: "JetBrains Nerd Font Mono", "得意黑", "DejaVu Sans Mono",
+    "DejaVu", "Arial", sans-serif;
 }
 
 body {
@@ -231,7 +230,7 @@ body {
 
   #sk_keystroke kbd {
     color: black;
-    background: white;
+    background: '#181825';
   }
 
   #sk_keystroke kbd .candidates {

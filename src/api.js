@@ -16,12 +16,18 @@ const getBrowserName = () => {
 }
 
 const getApi = () => {
+
   if (typeof window === "undefined") {
     return {}
   }
 
   if (typeof api !== "undefined") {
     // Surfingkeys >= 1.0
+    const hintsCss =
+    "font-size: 10pt; font-family: SauceCodePro Nerd Font, Consolas, Menlo, monospace; border: 0px; color:#74c7ec; background: initial; background-color: #181831;";
+
+    api.Hints.style(hintsCss);
+    api.Hints.style(hintsCss, "text");
     return {
       v1: true,
       ...api,
@@ -29,6 +35,8 @@ const getApi = () => {
   }
 
   // Surfingkeys < 1.0
+
+
   return {
     v1: false,
     getBrowserName,

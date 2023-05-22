@@ -89,6 +89,7 @@ const registerSearchEngines = (searchEngines, searchleader) =>
   })
 
 const main = async () => {
+
   window.surfingKeys = api
   if (conf.settings) {
     Object.assign(
