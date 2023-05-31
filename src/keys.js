@@ -1,12 +1,12 @@
-import actions from "./actions.js"
-import api from "./api.js"
-import help from "./help.js"
-import priv from "./conf.priv.js"
-import util from "./util.js"
+import actions from "./actions.js";
+import api from "./api.js";
+import help from "./help.js";
+import priv from "./conf.priv.js";
+import util from "./util.js";
 
-const { categories } = help
+const { categories } = help;
 
-const { Clipboard, Front } = api
+const { Clipboard, Front } = api;
 
 // Remove undesired default mappings
 const unmaps = {
@@ -44,9 +44,9 @@ const unmaps = {
   searchAliases: {
     s: ["g", "d", "b", "e", "w", "s", "h", "y"],
   },
-}
+};
 
-const maps = {}
+const maps = {};
 
 maps.global = [
   {
@@ -66,12 +66,12 @@ maps.global = [
   // │                          Custom                          │
   // ╰──────────────────────────────────────────────────────────╯
   // FIXME :this not working
-  // {
-  //   alias: "h",
-  //   map: "L",
-  //   category: categories.mouseClick,
-  //   description: "寻找输入框",
-  // },
+  {
+    alias: "h",
+    map: "I",
+    category: categories.mouseClick,
+    description: "寻找输入框",
+  },
   {
     alias: "i",
     map: "k",
@@ -159,11 +159,11 @@ maps.global = [
     category: categories.pageNav,
     description: "进入上一级域名",
     callback: () => {
-      const subdomains = window.location.host.split(".")
+      const subdomains = window.location.host.split(".");
       const parentDomain = (
         subdomains.length > 2 ? subdomains.slice(1) : subdomains
-      ).join(".")
-      actions.openLink(`${window.location.protocol}//${parentDomain}`)
+      ).join(".");
+      actions.openLink(`${window.location.protocol}//${parentDomain}`);
     },
   },
   {
@@ -183,8 +183,9 @@ maps.global = [
     category: categories.clipboard,
     description: "复制链接作为Markdown",
     callback: () =>
-      util.createHints("a[href]", (a) =>
-        Clipboard.write(`[${a.innerText}](${a.href})`)
+      util.createHints(
+        "a[href]",
+        (a) => Clipboard.write(`[${a.innerText}](${a.href})`),
       ),
   },
   {
@@ -318,9 +319,11 @@ maps.global = [
     category: categories.clipboard,
     description: "打开剪贴板字符串作为GitHub路径(例如:torvalds / linux)",
     callback: async () => {
-      const { url } = actions.gh.parseRepo(await navigator.clipboard.readText())
-      Front.showBanner(`Open ${url}`)
-      actions.openLink(url, { newTab: true })
+      const { url } = actions.gh.parseRepo(
+        await navigator.clipboard.readText(),
+      );
+      Front.showBanner(`Open ${url}`);
+      actions.openLink(url, { newTab: true });
     },
   },
   {
@@ -340,7 +343,7 @@ maps.global = [
   //   description: "打开AWS服务",
   //   callback:    actions.omnibar.aws,
   // },
-]
+];
 
 maps["amazon.com"] = [
   {
@@ -383,7 +386,7 @@ maps["amazon.com"] = [
     description: "打开订单页面",
     callback: () => actions.openLink("/gp/css/order-history"),
   },
-]
+];
 
 const googleSearchResultSelector = [
   "a h3",
@@ -398,7 +401,7 @@ const googleSearchResultSelector = [
   ".X5OiLe",
   ".WlydOe",
   ".fl",
-].join(",")
+].join(",");
 
 maps["www.google.com"] = [
   {
@@ -412,7 +415,7 @@ maps["www.google.com"] = [
     callback: () =>
       util.createHints(
         googleSearchResultSelector,
-        actions.openAnchor({ newTab: true, active: false })
+        actions.openAnchor({ newTab: true, active: false }),
       ),
   },
   {
@@ -420,7 +423,7 @@ maps["www.google.com"] = [
     description: "在DuckDuckGo打开搜索",
     callback: actions.go.ddg,
   },
-]
+];
 
 maps["algolia.com"] = [
   {
@@ -428,14 +431,14 @@ maps["algolia.com"] = [
     description: "打开搜索结果",
     callback: () => util.createHints(".item-main h2>a:first-child"),
   },
-]
+];
 
 const ddgSelector = [
   "a[rel=noopener][target=_self]:not([data-testid=result-extras-url-link])",
   ".js-images-show-more",
   ".module--images__thumbnails__link",
   ".tile--img__sub",
-].join(",")
+].join(",");
 
 maps["duckduckgo.com"] = [
   {
@@ -449,7 +452,7 @@ maps["duckduckgo.com"] = [
     callback: () =>
       util.createHints(
         ddgSelector,
-        actions.openAnchor({ newTab: true, active: false })
+        actions.openAnchor({ newTab: true, active: false }),
       ),
   },
   {
@@ -473,7 +476,7 @@ maps["duckduckgo.com"] = [
     description: "搜索网站:reddit.com",
     callback: () => actions.dg.siteSearch("reddit.com"),
   },
-]
+];
 
 maps["www.yelp.com"] = [
   {
@@ -481,7 +484,7 @@ maps["www.yelp.com"] = [
     description: "Fakespot",
     callback: actions.fakeSpot,
   },
-]
+];
 
 maps["youtube.com"] = [
   {
@@ -491,7 +494,7 @@ maps["youtube.com"] = [
     callback: () =>
       util.createHints(
         "*[id='video-title']",
-        actions.openAnchor({ newTab: true })
+        actions.openAnchor({ newTab: true }),
       ),
   },
   {
@@ -515,7 +518,7 @@ maps["youtube.com"] = [
       actions.dispatchMouseEvents(
         document.querySelector("#movie_player.ytp-fullscreen-button"),
         "mousedown",
-        "click"
+        "click",
       ),
   },
   {
@@ -531,7 +534,7 @@ maps["youtube.com"] = [
     callback: () =>
       Clipboard.write(actions.yt.getCurrentTimestampMarkdownLink()),
   },
-]
+];
 
 maps["vimeo.com"] = [
   {
@@ -539,8 +542,21 @@ maps["vimeo.com"] = [
     description: "切换全屏",
     callback: () => document.querySelector(".fullscreen-icon").click(),
   },
-]
+];
 
+maps["bilibili.com"] = [
+  {
+    leader: "",
+    alias: "F",
+    description: "切换全屏",
+    callback: () =>
+      document
+        .querySelector(
+          "#bilibili-player > div > div > div.bpx-player-primary-area > div.bpx-player-video-area > div.bpx-player-control-wrap > div.bpx-player-control-entity > div.bpx-player-control-bottom > div.bpx-player-control-bottom-right > div.bpx-player-ctrl-btn.bpx-player-ctrl-full",
+        )
+        .click(),
+  },
+];
 maps["github.com"] = [
   {
     alias: "A",
@@ -697,7 +713,7 @@ maps["github.com"] = [
     description: "在repo中打开剪贴板字符串作为文件路径",
     callback: actions.gh.openFileFromClipboard,
   },
-]
+];
 
 maps["raw.githubusercontent.com"] = [
   {
@@ -710,7 +726,7 @@ maps["raw.githubusercontent.com"] = [
     description: "打开源文件",
     callback: actions.gh.openSourceFile,
   },
-]
+];
 
 maps["github.io"] = [
   {
@@ -718,7 +734,7 @@ maps["github.io"] = [
     description: "打开存储库页面",
     callback: () => actions.gh.openGithubPagesRepo(),
   },
-]
+];
 
 maps["gitlab.com"] = [
   {
@@ -742,7 +758,7 @@ maps["gitlab.com"] = [
     description: "查看GoDoc项目",
     callback: actions.viewGodoc,
   },
-]
+];
 
 maps["twitter.com"] = [
   {
@@ -773,7 +789,7 @@ maps["twitter.com"] = [
     callback: () =>
       document
         .querySelector(
-          "a[role='button'][data-testid='SideNav_NewTweet_Button']"
+          "a[role='button'][data-testid='SideNav_NewTweet_Button']",
         )
         .click(),
   },
@@ -787,10 +803,10 @@ maps["twitter.com"] = [
     description: "Goto tweet",
     callback: () =>
       util.createHints(
-        "article, article div[data-focusable='true'][role='link'][tabindex='0']"
+        "article, article div[data-focusable='true'][role='link'][tabindex='0']",
       ),
   },
-]
+];
 
 maps["reddit.com"] = [
   {
@@ -829,7 +845,7 @@ maps["reddit.com"] = [
     callback: () =>
       util.createHints(
         ".title",
-        actions.openAnchor({ newTab: true, active: false })
+        actions.openAnchor({ newTab: true, active: false }),
       ),
   },
   {
@@ -843,10 +859,10 @@ maps["reddit.com"] = [
     callback: () =>
       util.createHints(
         ".comments",
-        actions.openAnchor({ newTab: true, active: false })
+        actions.openAnchor({ newTab: true, active: false }),
       ),
   },
-]
+];
 
 maps["news.ycombinator.com"] = [
   {
@@ -890,7 +906,7 @@ maps["news.ycombinator.com"] = [
     callback: () =>
       util.createHints(
         ".subline>a[href^='item']",
-        actions.openAnchor({ newTab: true, active: false })
+        actions.openAnchor({ newTab: true, active: false }),
       ),
   },
   {
@@ -916,7 +932,7 @@ maps["news.ycombinator.com"] = [
     description: "前一个页面",
     callback: () => actions.hn.goPage(-1),
   },
-]
+];
 
 maps["producthunt.com"] = [
   {
@@ -929,7 +945,7 @@ maps["producthunt.com"] = [
     description: "查看产品",
     callback: () =>
       util.createHints(
-        "ul[class^='postsList_'] > li > div[class^='item_'] > a"
+        "ul[class^='postsList_'] > li > div[class^='item_'] > a",
       ),
   },
   {
@@ -937,7 +953,7 @@ maps["producthunt.com"] = [
     description: "Upvote产品",
     callback: () => util.createHints("button[data-test='vote-button']"),
   },
-]
+];
 
 maps["behance.net"] = [
   {
@@ -961,10 +977,10 @@ maps["behance.net"] = [
     callback: () =>
       util.createHints(
         ".rf-project-cover__title",
-        actions.openAnchor({ newTab: true, active: false })
+        actions.openAnchor({ newTab: true, active: false }),
       ),
   },
-]
+];
 
 maps["fonts.adobe.com"] = [
   {
@@ -977,7 +993,7 @@ maps["fonts.adobe.com"] = [
     description: "最喜欢的字体",
     callback: () => util.createHints(".favorite-toggle-icon"),
   },
-]
+];
 
 maps["wikipedia.org"] = [
   {
@@ -990,7 +1006,7 @@ maps["wikipedia.org"] = [
     description: "视图页面",
     callback: () =>
       util.createHints(
-        "#bodyContent :not(sup):not(.mw-editsection) > a:not([rel=nofollow])"
+        "#bodyContent :not(sup):not(.mw-editsection) > a:not([rel=nofollow])",
       ),
   },
   {
@@ -1008,7 +1024,7 @@ maps["wikipedia.org"] = [
     description: "查看WikiRank当前文章",
     callback: actions.wp.viewWikiRank,
   },
-]
+];
 
 maps["craigslist.org"] = [
   {
@@ -1016,7 +1032,7 @@ maps["craigslist.org"] = [
     description: "查看清单",
     callback: () => util.createHints("a.result-title"),
   },
-]
+];
 
 maps["stackoverflow.com"] = [
   {
@@ -1024,7 +1040,7 @@ maps["stackoverflow.com"] = [
     description: "查看问题",
     callback: () => util.createHints("a.question-hyperlink"),
   },
-]
+];
 
 maps["aur.archlinux.org"] = [
   {
@@ -1032,7 +1048,7 @@ maps["aur.archlinux.org"] = [
     description: "视图包",
     callback: () => util.createHints("a[href^='/packages/'][href$='/']"),
   },
-]
+];
 
 maps["home.nest.com"] = [
   {
@@ -1085,11 +1101,11 @@ maps["home.nest.com"] = [
     description: "关闭风扇",
     callback: () => actions.nt.setFan(0),
   },
-]
+];
 
 const rescriptMeta = {
   docsPat: "/docs(/.*)?",
-}
+};
 
 maps["rescript-lang.org"] = [
   // Links / elements
@@ -1221,7 +1237,7 @@ maps["rescript-lang.org"] = [
     path: rescriptMeta.docsPat,
     callback: () => actions.re.scrollContent("pageDown"),
   },
-]
+];
 
 maps["devdocs.io"] = [
   {
@@ -1272,7 +1288,7 @@ maps["devdocs.io"] = [
     description: "滚动正文页面向下",
     callback: () => actions.dv.scrollContent("pageDown"),
   },
-]
+];
 
 maps["ebay.com"] = [
   {
@@ -1280,7 +1296,7 @@ maps["ebay.com"] = [
     description: "Fakespot",
     callback: actions.fakeSpot,
   },
-]
+];
 
 maps["ikea.com"] = [
   {
@@ -1319,136 +1335,136 @@ maps["ikea.com"] = [
     callback: () =>
       actions.openLink("/us/en/customer-service/track-manage-order/"),
   },
-]
+];
 
 const registerDOI = (
   domain,
-  provider = actions.doi.providers.meta_citation_doi
+  provider = actions.doi.providers.meta_citation_doi,
 ) => {
   if (!maps[domain]) {
-    maps[domain] = []
+    maps[domain] = [];
   }
   maps[domain].push({
     alias: "O",
     description: "打开数字对象标识符",
     callback: () => {
-      const url = actions.doi.getLink(provider)
+      const url = actions.doi.getLink(provider);
       if (url) {
-        actions.openLink(url, { newTab: true })
+        actions.openLink(url, { newTab: true });
       }
     },
     hide: true,
-  })
-}
+  });
+};
 
 if (priv.doi_handler) {
-  registerDOI("aaai.org")
-  registerDOI("academic.oup.com")
-  registerDOI("aeaweb.org")
-  registerDOI("aging-us.com")
-  registerDOI("ahajournals.org", actions.doi.providers.meta_dcIdentifier_doi)
-  registerDOI("ajnr.org")
-  registerDOI("annualreviews.org", actions.doi.providers.meta_dcIdentifier_doi)
+  registerDOI("aaai.org");
+  registerDOI("academic.oup.com");
+  registerDOI("aeaweb.org");
+  registerDOI("aging-us.com");
+  registerDOI("ahajournals.org", actions.doi.providers.meta_dcIdentifier_doi);
+  registerDOI("ajnr.org");
+  registerDOI("annualreviews.org", actions.doi.providers.meta_dcIdentifier_doi);
   registerDOI("apa.org", () =>
     document
       .querySelector(".citation a")
-      ?.innerText?.replace(/^https:\/\/doi\.org\//, "")
-  )
-  registerDOI("ashpublications.org")
-  registerDOI("asnjournals.org")
-  registerDOI("biomedcentral.com")
-  registerDOI("bmj.com")
-  registerDOI("brill.com")
-  registerDOI("cambridge.org")
-  registerDOI("cell.com")
-  registerDOI("cmaj.ca")
-  registerDOI("cochranelibrary.com")
-  registerDOI("diabetesjournals.org")
-  registerDOI("direct.mit.edu")
-  registerDOI("dl.acm.org", actions.doi.providers.meta_dcIdentifier_doi)
+      ?.innerText?.replace(/^https:\/\/doi\.org\//, ""));
+  registerDOI("ashpublications.org");
+  registerDOI("asnjournals.org");
+  registerDOI("biomedcentral.com");
+  registerDOI("bmj.com");
+  registerDOI("brill.com");
+  registerDOI("cambridge.org");
+  registerDOI("cell.com");
+  registerDOI("cmaj.ca");
+  registerDOI("cochranelibrary.com");
+  registerDOI("diabetesjournals.org");
+  registerDOI("direct.mit.edu");
+  registerDOI("dl.acm.org", actions.doi.providers.meta_dcIdentifier_doi);
   registerDOI("elifesciences.org", () =>
     document
       .querySelector("meta[name='dc.identifier']")
-      ?.content?.replace(/^doi:/, "")
-  )
-  registerDOI("embopress.org")
-  registerDOI("emerald.com", actions.doi.providers.meta_dcIdentifier_doi)
-  registerDOI("episciences.org")
-  registerDOI("epubs.siam.org", actions.doi.providers.meta_dcIdentifier_doi)
-  registerDOI("ersjournals.com")
-  registerDOI("europepmc.org")
-  registerDOI("frontiersin.org")
-  registerDOI("future-science.com", actions.doi.providers.meta_dcIdentifier_doi)
-  registerDOI("go.gale.com")
+      ?.content?.replace(/^doi:/, ""));
+  registerDOI("embopress.org");
+  registerDOI("emerald.com", actions.doi.providers.meta_dcIdentifier_doi);
+  registerDOI("episciences.org");
+  registerDOI("epubs.siam.org", actions.doi.providers.meta_dcIdentifier_doi);
+  registerDOI("ersjournals.com");
+  registerDOI("europepmc.org");
+  registerDOI("frontiersin.org");
+  registerDOI(
+    "future-science.com",
+    actions.doi.providers.meta_dcIdentifier_doi,
+  );
+  registerDOI("go.gale.com");
   registerDOI(
     "ieee.org",
-    () => document.querySelector(".stats-document-abstract-doi a")?.innerText
-  )
+    () => document.querySelector(".stats-document-abstract-doi a")?.innerText,
+  );
   registerDOI("ingentaconnect.com", () =>
     document
       .querySelector("meta[name='DC.identifier']")
-      ?.content?.replace(/^info:doi\//, "")
-  )
-  registerDOI("jacc.or", actions.doi.providers.meta_dcIdentifier_doi)
-  registerDOI("jamanetwork.com")
-  registerDOI("jci.org")
-  registerDOI("jfdc.cnic.cn")
-  registerDOI("jlr.org")
-  registerDOI("jneurosci.org")
-  registerDOI("journals.lww.com")
+      ?.content?.replace(/^info:doi\//, ""));
+  registerDOI("jacc.or", actions.doi.providers.meta_dcIdentifier_doi);
+  registerDOI("jamanetwork.com");
+  registerDOI("jci.org");
+  registerDOI("jfdc.cnic.cn");
+  registerDOI("jlr.org");
+  registerDOI("jneurosci.org");
+  registerDOI("journals.lww.com");
   registerDOI(
     "journals.physiology.org",
-    actions.doi.providers.meta_dcIdentifier_doi
-  )
-  registerDOI("journals.plos.org")
+    actions.doi.providers.meta_dcIdentifier_doi,
+  );
+  registerDOI("journals.plos.org");
   registerDOI(
     "journals.sagepub.com",
-    actions.doi.providers.meta_dcIdentifier_doi
-  )
+    actions.doi.providers.meta_dcIdentifier_doi,
+  );
   registerDOI(
     "journals.uchicago.edu",
-    actions.doi.providers.meta_dcIdentifier_doi
-  )
-  registerDOI("jst.go.jp")
-  registerDOI("karger.com")
-  registerDOI("koreascience.kr")
-  registerDOI("koreascience.or.kr")
-  registerDOI("liebertpub.com", actions.doi.providers.meta_dcIdentifier_doi)
-  registerDOI("mdpi.com")
+    actions.doi.providers.meta_dcIdentifier_doi,
+  );
+  registerDOI("jst.go.jp");
+  registerDOI("karger.com");
+  registerDOI("koreascience.kr");
+  registerDOI("koreascience.or.kr");
+  registerDOI("liebertpub.com", actions.doi.providers.meta_dcIdentifier_doi);
+  registerDOI("mdpi.com");
   registerDOI(
     "msp.org",
-    () => document.querySelector(".paper-doi a")?.innerText
-  )
-  registerDOI("nature.com")
-  registerDOI("nejm.org", actions.doi.providers.meta_dcIdentifier_doi)
-  registerDOI("nowpublishers.com")
-  registerDOI("nsf.gov")
-  registerDOI("ocl-journal.org")
-  registerDOI("onlinelibrary.wiley.com")
-  registerDOI("pnas.org")
-  registerDOI("ncbi.nlm.nih.gov")
-  registerDOI("pubs.acs.org", actions.doi.providers.meta_dcIdentifier_doi)
-  registerDOI("pubs.geoscienceworld.org")
-  registerDOI("pubs.rsna.org", actions.doi.providers.meta_dcIdentifier_doi)
-  registerDOI("research.manchester.ac.uk")
+    () => document.querySelector(".paper-doi a")?.innerText,
+  );
+  registerDOI("nature.com");
+  registerDOI("nejm.org", actions.doi.providers.meta_dcIdentifier_doi);
+  registerDOI("nowpublishers.com");
+  registerDOI("nsf.gov");
+  registerDOI("ocl-journal.org");
+  registerDOI("onlinelibrary.wiley.com");
+  registerDOI("pnas.org");
+  registerDOI("ncbi.nlm.nih.gov");
+  registerDOI("pubs.acs.org", actions.doi.providers.meta_dcIdentifier_doi);
+  registerDOI("pubs.geoscienceworld.org");
+  registerDOI("pubs.rsna.org", actions.doi.providers.meta_dcIdentifier_doi);
+  registerDOI("research.manchester.ac.uk");
   registerDOI(
     "royalsocietypublishing.org",
-    actions.doi.providers.meta_dcIdentifier_doi
-  )
-  registerDOI("rupress.org")
-  registerDOI("science.org", actions.doi.providers.meta_dcIdentifier_doi)
-  registerDOI("sciencedirect.com")
-  registerDOI("scitation.org")
-  registerDOI("spandidos-publications.com")
-  registerDOI("spiedigitallibrary.org")
-  registerDOI("springer.com")
-  registerDOI("synapse.koreamed.org")
-  registerDOI("tandfonline.com", actions.doi.providers.meta_dcIdentifier_doi)
-  registerDOI("thelancet.com")
+    actions.doi.providers.meta_dcIdentifier_doi,
+  );
+  registerDOI("rupress.org");
+  registerDOI("science.org", actions.doi.providers.meta_dcIdentifier_doi);
+  registerDOI("sciencedirect.com");
+  registerDOI("scitation.org");
+  registerDOI("spandidos-publications.com");
+  registerDOI("spiedigitallibrary.org");
+  registerDOI("springer.com");
+  registerDOI("synapse.koreamed.org");
+  registerDOI("tandfonline.com", actions.doi.providers.meta_dcIdentifier_doi);
+  registerDOI("thelancet.com");
   registerDOI(
     "worldscientific.com",
-    actions.doi.providers.meta_dcIdentifier_doi
-  )
+    actions.doi.providers.meta_dcIdentifier_doi,
+  );
 }
 
 const aliases = {
@@ -1477,10 +1493,10 @@ const aliases = {
     "stackapps.com",
     "mathoverflow.net",
   ],
-}
+};
 
 export default {
   unmaps,
   maps,
   aliases,
-}
+};

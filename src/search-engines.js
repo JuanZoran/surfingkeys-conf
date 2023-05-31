@@ -70,12 +70,12 @@ completions.au = {
   search:
     "https://aur.archlinux.org/packages/?O=0&SeB=nd&outdated=&SB=v&SO=d&PP=100&do_Search=Go&K=",
   compl: "https://aur.archlinux.org/rpc?v=5&type=suggest&arg=",
+  callback: (response) => {
+    const res = JSON.parse(response.text)
+    return res.map((s) => urlItem(s, `https://aur.archlinux.org/packages/${s}`))
+  }
 }
 
-completions.au.callback = (response) => {
-  const res = JSON.parse(response.text)
-  return res.map((s) => urlItem(s, `https://aur.archlinux.org/packages/${s}`))
-}
 
 // Arch Linux Wiki
 completions.aw = {

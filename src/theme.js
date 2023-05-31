@@ -1,6 +1,39 @@
 export default `
+  :root {
+      --theme-ace-bg-no-trans:#181825d9;
+      --theme-ace-bg:#18182599; /*Note the fourth channel, this adds transparency*/
+      --theme-ace-bg-accent:#ffffff99;
+      --theme-ace-fg:#74c7ec;
+      --theme-ace-fg-accent:#c61ad9;
+      --theme-ace-cursor:#599eff99;
+      --theme-ace-select:#89b4fa79;
+  }
+  #sk_editor {
+      height: 50% !important; /*Remove this to restore the default editor size*/
+      background: var(--theme-ace-bg) !important;
+  }
+  .ace-chrome .ace_print-margin, .ace_gutter, .ace_gutter-cell, .ace_dialog{
+      background: var(--theme-ace-bg-accent) !important;
+  }
+  .ace_dialog-bottom{
+      border-top: 1px solid var(--theme-ace-bg) !important;
+  }
+  .ace-chrome{
+      color: var(--theme-ace-fg) !important;
+  }
+  .ace_gutter, .ace_dialog {
+      color: var(--theme-ace-fg-accent) !important;
+  }
+  .normal-mode .ace_cursor{
+      color: var(--theme-ace-bg) !important;
+      background: var(--theme-ace-cursor) !important;
+      border: var(--theme-ace-fg-accent) !important;
+  }
+  .ace_marker-layer .ace_selection {
+      background: var(--theme-ace-select) !important;
+  }
   body {
-    font-family: "Input Mono", "DejaVu Sans Mono", DejaVu, Arial, sans-serif;
+    font-family: "JetBrainsMono Nerd Font", "得意黑", sans-serif;
     font-size: 12pt;
   }
 
@@ -36,65 +69,63 @@ export default `
     padding-left: 8px !important;
   }
 
-  @media (prefers-color-scheme: light) {
-    body {
-      color: #d7b0ff;
-    }
-
-    #sk_omnibar {
-      background-color: #2a323e;
-      color: #cad1d7;
-    }
-
-    #sk_omnibar .prompt {
-      color: #eef5fb !important;
-    }
-
-    #sk_omnibar .separator {
-      color: #8af4ff !important;
-      padding-left: 8px !important;
-    }
-
-    #sk_omnibar input {
-      color: white !important;
-    }
-
-    #sk_omnibarSearchResult {
-      border-top: 1px solid #545f6f !important;
-    }
-
-    #sk_omnibar li.focused {
-      background: #181d24 !important;
-      color: #eef5fb !important;
-    }
-
-    #sk_banner,
-    #sk_keystroke {
-      border: 1px solid #d7b0ff;
-      background: #483270;
-    }
-
-    #sk_keystroke .annotation {
-      color: #d7b0ff;
-    }
-
-    #sk_keystroke kbd {
-      color: #fff;
-      background: #7a57a4;
-      border: 1px solid #2d0080;
-      box-shadow: none;
-    }
-
-    #sk_keystroke kbd .candidates {
-      color: #ff8cf8;
-    }
+  body {
+    color: #d7b0ff;
   }
 
-  /* Disable RichHints CSS animation */
-  .expandRichHints {
-    animation: none;
+  #sk_omnibar {
+    background-color: var(--theme-ace-bg-no-trans);
+    color: var(--theme-ace-fg);
   }
-  .collapseRichHints {
-    animation: none;
+
+  #sk_omnibar .prompt {
+    color: #eef5fb !important;
   }
-`
+
+  #sk_omnibar .separator {
+    color: #8af4ff !important;
+    padding-left: 8px !important;
+  }
+
+  #sk_omnibar input {
+    color: white !important;
+  }
+
+  #sk_omnibarSearchResult {
+    border-top: 1px solid #545f6f !important;
+  }
+
+  #sk_omnibar li.focused {
+    background: #181d24 !important;
+    color: #eef5fb !important;
+  }
+
+  #sk_banner,
+  #sk_keystroke {
+    border: 1px solid #d7b0ff;
+    background: #483270;
+  }
+
+  #sk_keystroke .annotation {
+    color: #d7b0ff;
+  }
+
+  #sk_keystroke kbd {
+    color: #fff;
+    background: #7a57a4;
+    border: 1px solid #2d0080;
+    box-shadow: none;
+  }
+
+  #sk_keystroke kbd .candidates {
+    color: #ff8cf8;
+  }
+`;
+
+/* Disable RichHints CSS animation */
+// .expandRichHints {
+//   animation: none;
+// }
+// .collapseRichHints {
+//   animation: none;
+// }
