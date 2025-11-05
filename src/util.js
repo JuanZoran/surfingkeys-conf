@@ -7,14 +7,16 @@ const { Hints, RUNTIME } = api
 
 const util = {}
 
-const promisify = (fn) => (...args) =>
-  new Promise((resolve, reject) => {
-    try {
-      fn(...args, resolve)
-    } catch (e) {
-      reject(e)
-    }
-  })
+const promisify =
+  (fn) =>
+  (...args) =>
+    new Promise((resolve, reject) => {
+      try {
+        fn(...args, resolve)
+      } catch (e) {
+        reject(e)
+      }
+    })
 util.promisify = promisify
 
 const runtime = promisify(RUNTIME)
@@ -65,36 +67,36 @@ util.until = (check, test = (a) => a, maxAttempts = 50, interval = 50) =>
     f()
   })
 
-const localStorageFns = () => {
-  if (typeof browser !== "undefined") {
-    return [browser.storage.local.get, browser.storage.local.set]
-  }
-  if (typeof chrome !== "undefined") {
-    return [chrome.storage.local.get, chrome.storage.local.set].map((fn) =>
-      util.promisify(fn.bind(chrome.storage.local))
-    )
-  }
-  const fn = () =>
-    new Error("local storage unavailable: unsupported environment")
-  return [fn, fn]
-}
-
-const [localStorageGet, localStorageSet] = localStorageFns()
-
-util.localStorage = {}
-
-util.localStorage.fullkey = (key) => `surfingkeys-conf.${key}`
-
-util.localStorage.get = async (key) => {
-  const fullkey = util.localStorage.fullkey(key)
-  return (await localStorageGet(fullkey))[fullkey]
-}
-
-util.localStorage.set = async (key, val) => {
-  const fullkey = util.localStorage.fullkey(key)
-  const storageObj = { [fullkey]: val }
-  return localStorageSet(storageObj)
-}
+// const localStorageFns = () => {
+//   if (typeof browser !== "undefined") {
+//     return [browser.storage.local.get, browser.storage.local.set]
+//   }
+//   if (typeof chrome !== "undefined") {
+//     return [chrome.storage.local.get, chrome.storage.local.set].map((fn) =>
+//       util.promisify(fn.bind(chrome.storage.local))
+//     )
+//   }
+//   const fn = () =>
+//     new Error("local storage unavailable: unsupported environment")
+//   return [fn, fn]
+// }
+//
+// const [localStorageGet, localStorageSet] = localStorageFns()
+//
+// util.localStorage = {}
+//
+// util.localStorage.fullkey = (key) => `surfingkeys-conf.${key}`
+//
+// util.localStorage.get = async (key) => {
+//   const fullkey = util.localStorage.fullkey(key)
+//   return (await localStorageGet(fullkey))[fullkey]
+// }
+//
+// util.localStorage.set = async (key, val) => {
+//   const fullkey = util.localStorage.fullkey(key)
+//   const storageObj = { [fullkey]: val }
+//   return localStorageSet(storageObj)
+// }
 
 util.htmlUnsafe = (content) => html.node([content])
 
@@ -108,10 +110,12 @@ util.htmlForEach = (items) => items.map((item) => html.for(item)`${item}`)
 util.html = (template, ...values) =>
   util.htmlNode(template, ...values).outerHTML
 
-util.suggestionItem = (props = {}) => (template, ...values) => ({
-  html: util.html(template, ...values),
-  props,
-})
+util.suggestionItem =
+  (props = {}) =>
+  (template, ...values) => ({
+    html: util.html(template, ...values),
+    props,
+  })
 
 util.urlItem = (title, url, { desc = null, query = null } = {}) => {
   const descItems =

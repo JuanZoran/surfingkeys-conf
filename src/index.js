@@ -1,8 +1,8 @@
-import conf from "./conf.js";
-import help from "./help.js";
-import api from "./api.js";
+import conf from "./conf.js"
+import help from "./help.js"
+import api from "./api.js"
 
-const { categories } = help;
+const { categories } = help
 const {
   mapkey,
   map,
@@ -14,7 +14,7 @@ const {
   Front,
   removeSearchAlias,
   addSearchAlias,
-} = api;
+} = api
 
 const registerKey = (domain, mapObj, siteleader) => {
   const {
@@ -24,44 +24,44 @@ const registerKey = (domain, mapObj, siteleader) => {
     category = categories.misc,
     description = "",
     path = "(/.*)?",
-  } = mapObj;
-  const opts = {};
+  } = mapObj
+  const opts = {}
 
-  const key = `${leader}${alias}`;
+  const key = `${leader}${alias}`
 
   if (domain !== "global") {
-    const d = domain.replace(".", "\\.");
-    opts.domain = new RegExp(`^http(s)?://(([a-zA-Z0-9-_]+\\.)*)(${d})${path}`);
+    const d = domain.replace(".", "\\.")
+    opts.domain = new RegExp(`^http(s)?://(([a-zA-Z0-9-_]+\\.)*)(${d})${path}`)
   }
 
-  const fullDescription = `#${category} ${description}`;
+  const fullDescription = `#${category} ${description}`
 
   if (typeof mapObj.map !== "undefined") {
-    map(alias, mapObj.map);
+    map(alias, mapObj.map)
   } else {
-    mapkey(key, fullDescription, callback, opts);
+    mapkey(key, fullDescription, callback, opts)
   }
-};
+}
 
 const registerKeys = (maps, aliases, siteleader) => {
   const hydratedAliases = Object.entries(aliases).flatMap(
     ([baseDomain, aliasDomains]) =>
-      aliasDomains.flatMap((a) => ({ [a]: maps[baseDomain] })),
-  );
+      aliasDomains.flatMap((a) => ({ [a]: maps[baseDomain] }))
+  )
 
-  const mapsAndAliases = Object.assign({}, maps, ...hydratedAliases);
+  const mapsAndAliases = Object.assign({}, maps, ...hydratedAliases)
 
   Object.entries(mapsAndAliases).forEach(([domain, domainMaps]) =>
     domainMaps.forEach((mapObj) => registerKey(domain, mapObj, siteleader))
-  );
-};
+  )
+}
 
 const registerSearchEngines = (searchEngines, searchleader) =>
   Object.values(searchEngines).forEach((s) => {
     const options = {
       favicon_url: s.favicon,
       skipMaps: true,
-    };
+    }
     addSearchAlias(
       s.alias,
       s.name,
@@ -70,13 +70,11 @@ const registerSearchEngines = (searchEngines, searchleader) =>
       s.compl,
       s.callback,
       undefined,
-      options,
-    );
-    mapkey(
-      `${searchleader}${s.alias}`,
-      `#8搜索 ${s.name}`,
-      () => Front.openOmnibar({ type: "SearchEngine", extra: s.alias }),
-    );
+      options
+    )
+    mapkey(`${searchleader}${s.alias}`, `#8搜索 ${s.name}`, () =>
+      Front.openOmnibar({ type: "SearchEngine", extra: s.alias })
+    )
     mapkey(
       `c${searchleader}${s.alias}`,
       `#8Search ${s.name} with clipboard contents`,
@@ -86,33 +84,62 @@ const registerSearchEngines = (searchEngines, searchleader) =>
             type: "SearchEngine",
             pref: c.data,
             extra: s.alias,
-          });
-        });
-      },
-    );
-  });
-
-
-
+          })
+        })
+      }
+    )
+  })
 
 const userKeys = () => {
-  vmap("i", "k");
-  vmap("k", "j");
-  vmap("j", "h");
-  vmap("J", "0");
-  vmap("L", "$");
+  vmap("i", "k")
+  vmap("k", "j")
+  vmap("j", "h")
+  vmap("J", "0")
+  vmap("L", "$")
 
   addVimMapKey(
-    { keys: 'h', type: 'action', action: 'enterInsertMode', isEdit: true, actionArgs: { insertAt: 'inplace' }, context: 'normal' },
-    { keys: 'i', type: 'motion', motion: 'moveByLines', motionArgs: { forward: false, linewise: true }},
-    { keys: 'k', type: 'motion', motion: 'moveByLines', motionArgs: { forward: true, linewise: true }},
-    { keys: 'j', type: 'motion', motion: 'moveByCharacters', motionArgs: { forward: false }},
-    { keys: 'l', type: 'motion', motion: 'moveByCharacters', motionArgs: { forward: true }},
-    { keys: 'J', type: 'motion', motion: 'moveToStartOfLine' },
-    { keys: 'L', type: 'motion', motion: 'moveToEol', motionArgs: { inclusive: true }},
-  );
+    {
+      keys: "h",
+      type: "action",
+      action: "enterInsertMode",
+      isEdit: true,
+      actionArgs: { insertAt: "inplace" },
+      context: "normal",
+    },
+    {
+      keys: "i",
+      type: "motion",
+      motion: "moveByLines",
+      motionArgs: { forward: false, linewise: true },
+    },
+    {
+      keys: "k",
+      type: "motion",
+      motion: "moveByLines",
+      motionArgs: { forward: true, linewise: true },
+    },
+    {
+      keys: "j",
+      type: "motion",
+      motion: "moveByCharacters",
+      motionArgs: { forward: false },
+    },
+    {
+      keys: "l",
+      type: "motion",
+      motion: "moveByCharacters",
+      motionArgs: { forward: true },
+    },
+    { keys: "J", type: "motion", motion: "moveToStartOfLine" },
+    {
+      keys: "L",
+      type: "motion",
+      motion: "moveToEol",
+      motionArgs: { inclusive: true },
+    }
+  )
 
-  api.aceVimMap('<C-u>', '<Esc>d0xh', 'insert');
+  api.aceVimMap("<C-u>", "<Esc>d0xh", "insert")
   // var defaultKeymap = [
   //   // Key to key mapping. This goes first to make it possible to override
   //   // existing mappings.
@@ -290,55 +317,47 @@ const userKeys = () => {
   //   // Ex command
   //   { keys: ':', type: 'ex' }
   // ];
-
-};
-
-
-
-
-
-
-
+}
 
 const main = async () => {
-  window.surfingKeys = api;
+  window.surfingKeys = api
   if (conf.settings) {
     Object.assign(
       settings,
-      typeof conf.settings === "function" ? conf.settings() : conf.settings,
-    );
+      typeof conf.settings === "function" ? conf.settings() : conf.settings
+    )
   }
 
-  if (conf.logLevels) {
-    await chrome.storage.local.set({
-      logLevels: conf.logLevels,
-    });
-  }
+  //  if (conf.logLevels) {
+  //    await chrome.storage.local.set({
+  //      logLevels: conf.logLevels,
+  //    });
+  //  }
 
   if (conf.keys && conf.keys.unmaps) {
-    const { unmaps } = conf.keys;
+    const { unmaps } = conf.keys
     if (unmaps.mappings) {
-      unmaps.mappings.forEach((m) => unmap(m));
+      unmaps.mappings.forEach((m) => unmap(m))
     }
     if (unmaps.searchAliases) {
       Object.entries(unmaps.searchAliases).forEach(([leader, items]) => {
-        items.forEach((v) => removeSearchAlias(v, leader));
-      });
+        items.forEach((v) => removeSearchAlias(v, leader))
+      })
     }
   }
 
   if (conf.searchEngines) {
-    registerSearchEngines(conf.searchEngines, conf.searchleader ?? "o");
+    registerSearchEngines(conf.searchEngines, conf.searchleader ?? "o")
   }
 
   if (conf.keys && conf.keys.maps) {
-    const { keys } = conf;
-    const { maps, aliases = {} } = keys;
-    registerKeys(maps, aliases, conf.siteleader);
+    const { keys } = conf
+    const { maps, aliases = {} } = keys
+    registerKeys(maps, aliases, conf.siteleader)
   }
-  userKeys();
-};
+  userKeys()
+}
 
 if (typeof window !== "undefined") {
-  main();
+  main()
 }
