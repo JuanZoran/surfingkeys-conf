@@ -6,7 +6,7 @@ import util from "./util.js"
 
 const { categories } = help
 
-const { Clipboard, Front } = api
+const { Clipboard, Front, Hints } = api
 
 // Remove undesired default mappings
 const unmaps = {
@@ -270,6 +270,12 @@ maps.global = [
       actions.openLink(actions.getDiscussionsUrl(), { newTab: true }),
   },
   {
+    alias: "=S",
+    category: categories.misc,
+    description: "View summary for page",
+    callback: () => actions.openLink(actions.getSummaryUrl(), { newTab: true }),
+  },
+  {
     alias: "=o",
     category: categories.misc,
     description: "显示outline.com版本的页面",
@@ -445,7 +451,7 @@ maps["youtube.com"] = [
     description: "切换全屏",
     callback: () =>
       actions.dispatchMouseEvents(
-        document.querySelector("#movie_player.ytp-fullscreen-button"),
+        document.querySelector("#movie_player .ytp-fullscreen-button"),
         "mousedown",
         "click"
       ),
@@ -736,6 +742,20 @@ maps["twitter.com"] = [
       ),
   },
 ]
+
+maps["bsky.app"] = [
+  {
+    alias: "d",
+    description: "Copy user DID",
+    callback: actions.by.copyDID,
+  },
+  {
+    alias: "p",
+    description: "Copy user post ID",
+    callback: actions.by.copyPostID,
+  },
+]
+
 
 maps["reddit.com"] = [
   {

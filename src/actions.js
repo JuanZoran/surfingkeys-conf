@@ -4,7 +4,7 @@ import api from "./api.js"
 import priv from "./conf.priv.js"
 import util from "./util.js"
 
-const { tabOpenLink, Front, Hints, Normal, RUNTIME } = api
+const { tabOpenLink, Front, Hints, Normal, RUNTIME, Clipboard } = api
 
 const actions = {}
 
@@ -110,6 +110,11 @@ actions.getWappalyzerUrl = ({ hostname = window.location.hostname } = {}) =>
 
 actions.getDiscussionsUrl = ({ href = window.location.href } = {}) =>
   `https://discussions.xojoc.pw/?${new URLSearchParams({ url: href })}`
+
+actions.getSummaryUrl = ({ href = window.location.href } = {}) =>
+  `https://kagi.com/summarizer/index.html?${new URLSearchParams({
+    url: href,
+  })}`
 
 // // Custom Omnibar interfaces
 // // ------------------------
@@ -753,6 +758,12 @@ actions.gh.viewSourceGraph = () => {
   actions.openLink(url.href, { newTab: true })
 }
 
+actions.gh.openInDev = ({ newTab = false } = {}) => {
+  const url = new URL(window.location.href)
+  url.hostname = "github.dev"
+  actions.openLink(url.href, { newTab })
+}
+
 actions.gh.selectFile = async ({ files = true, directories = true } = {}) => {
   if (!(files || directories))
     throw new Error("At least one of 'files' or 'directories' must be true")
@@ -851,6 +862,23 @@ actions.tw.openUser = () =>
       )
     )
   )
+
+// Bsky
+// ----
+actions.by = {}
+actions.by.copyDID = () => {
+  util.createHints("img[src*='/did:plc:']", (e) => {
+    const [_, did] = e.src.match("/(did:.*)/")
+    if (did) Clipboard.write(did)
+  })
+}
+
+actions.by.copyPostID = () => {
+  util.createHints('a[href*="/post/"]', (e) => {
+    const [_, postID] = e.pathname.match(/^\/profile\/[^/]+\/post\/(\w+)/)
+    if (postID) Clipboard.write(postID)
+  })
+}
 
 // Reddit
 // ------
@@ -960,7 +988,8 @@ actions.wp.viewWikiRank = () => {
 }
 
 actions.wp.markdownSummary = () =>
-  `> ${[
+  `> [!wiki]
+> ${[
     (acc) => [...acc.querySelectorAll("sup")].map((e) => e.remove()),
     (acc) =>
       [...acc.querySelectorAll("b")].forEach((e) => {
@@ -978,8 +1007,8 @@ actions.wp.markdownSummary = () =>
         .cloneNode(true)
     )
     .innerText.trim()}
-
-— ${actions.getMarkdownLink()}`
+>
+> — ${actions.getMarkdownLink()}`
 
 // Nest Thermostat Controller
 // --------------------------

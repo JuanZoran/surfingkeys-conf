@@ -409,7 +409,7 @@ completions.yp.callback = (response) => {
 completions.un = {
   alias: "un",
   name: "unicode",
-  search: "https://unicode-table.com/en/search/?q=",
+  search: "https://symbl.cc/en/search/?q=",
   compl: `${localServer}/s/unicode?q=`,
   local: true,
 }
@@ -431,7 +431,7 @@ completions.un.callback = (response) => {
   return res.map(
     ({ symbol, name, value }) =>
       suggestionItem({
-        url: `https://unicode-table.com/en/${value}`,
+        url: `https://symbl.cc/en/${value}`,
         copy: symbol,
       })`
       <div>
@@ -673,7 +673,7 @@ completions.wa.callback = (response, { query }) => {
 
 // DuckDuckGo
 completions.dd = {
-  alias: "dd",
+  alias: "du",
   name: "duckduckgo",
   search: "https://duckduckgo.com/?q=",
   compl: "https://duckduckgo.com/ac/?q=",
@@ -1039,6 +1039,56 @@ completions.np.callback = (response) =>
     `
   })
 
+// TypeScript docs
+completions.ts = {
+  alias: "ts",
+  name: "typescript",
+  domain: "www.typescriptlang.org",
+  search: "https://duckduckgo.com/?q=site%3Awww.typescriptlang.org+",
+  compl: `https://bgcdyoiyz5-dsn.algolia.net/1/indexes/typescriptlang?x-algolia-application-id=BGCDYOIYZ5&x-algolia-api-key=37ee06fa68db6aef451a490df6df7c60&query=`,
+  favicon: "https://www.typescriptlang.org/favicon-32x32.png",
+}
+
+completions.ts.callback = async (response) => {
+  const res = JSON.parse(response.text)
+  return Object.entries(res.hits.reduce((acc, hit) => {
+    const lvl0 = hit.hierarchy.lvl0
+    if (!acc[lvl0]) {
+      acc[lvl0] = []
+    }
+    acc[lvl0].push(hit)
+    return acc
+  }, {}))
+    .sort(([lvl0A], [lvl0B]) => lvl0A.localeCompare(lvl0B))
+    .flatMap(([lvl0, hits]) => {
+      return hits.map((hit) => {
+        console.log(hit)
+        const lvl = hit.type
+        const hierarchy = Object.entries(hit.hierarchy).reduce(
+          (acc, [lvl, name]) => {
+            if (!name || lvl === hit.type) {
+              return acc
+            }
+            return `${acc ? acc + " > " : ""}${name}`
+          },
+          ""
+        )
+        const title = hit.hierarchy[lvl]
+        const desc = hit.content
+        return suggestionItem({ url: hit.url })`
+          <div>
+            <div style="font-weight: bold">
+              <span style="opacity: 0.6">${htmlPurify(hierarchy)}${title ? " > " : ""}</span>
+              <span style="">${htmlPurify(title)}</span>
+            </div>
+            <div>${htmlPurify(desc)}</div>
+            <div style="opacity: 0.6; line-height: 1.3em">${htmlPurify(hit.url)}</div>
+          </div>
+        `
+      })
+    })
+}
+
 // ****** Social Media & Entertainment ****** //
 
 // Hacker News (YCombinator)
@@ -1284,6 +1334,75 @@ completions.hf.callback = (response) => {
      `
     ),
   ]
+}
+
+/**
+ * @param {"crates"|"docs"} kind - The kind of completions to return.
+ * @returns {function} A callback function that takes a response object and returns an array of completion items.
+ */
+const cratesCb = (kind) => (response) => {
+  const res = JSON.parse(response.text)
+  return res.crates.map((s) => {
+    const title = s.name
+    const url = kind === "crates" ? `https://crates.io/crates/${s.name}` : `https://docs.rs/${s.name}`
+    let meta = ""
+    if (s.downloads) {
+      meta += `[↓${s.downloads}] `
+    }
+    if (s.recent_downloads) {
+      meta += `[↓${s.recent_downloads} recent] `
+    }
+    if (s.max_version) {
+      meta += `[v${s.max_version}] `
+    }
+    return suggestionItem({ url })`
+      <div>
+        <div class="title"><strong>${title}</strong> ${meta} ${kind}</div>
+        <div>${s.description || ""}</div>
+        <div style="opacity: 0.6; font-weight: bold; font-size: 0.8em">${s.repository || ""}</div>
+      </div>
+    `
+  })
+}
+
+// Crates.io
+completions.rc = {
+  alias: "rc",
+  name: "crates",
+  search: "https://crates.io/search?q=",
+  compl: "https://crates.io/api/v1/crates?t=0&q=",
+  callback: cratesCb("crates"),
+}
+
+// Crates.io (Docs)
+completions.rd = {
+  alias: "rd",
+  name: "crates-docs",
+  search: "https://docs.rs/releases/search?query=",
+  compl: "https://crates.io/api/v1/crates?t=1&q=",
+  callback: cratesCb("docs"),
+}
+
+// Query.rs (Docs for Stdlib + Crates)
+completions.rr = {
+  alias: "rr",
+  name: "query-rs",
+  search: "https://query.rs/redirect/",
+  compl: "https://query.rs/suggest/",
+}
+
+completions.rr.callback = (response) => {
+  const res = JSON.parse(response.text)
+  const items = res[1] ?? []
+  return items.map((s) => {
+    const [title, url] = s.split(' - ', 2)
+    return suggestionItem({ url })`
+      <div>
+        <div class="title"><strong>${title}</strong></div>
+        <div style="opacity: 0.6; font-weight: bold; font-size: 0.8em">${url}</div>
+      </div>
+    `
+  })
 }
 
 export default completions
